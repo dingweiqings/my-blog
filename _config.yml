@@ -104,5 +104,5 @@ theme: landscape
 deploy:
   type: git
   repo: git@github.com:dingweiqings/test-hexo.git
-  branch: [master]
-  message: "update"
+  branch: [pages]
+  message: "doc"
