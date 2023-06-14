@@ -103,6 +103,6 @@ theme: landscape
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:dingweiqings/test-hexo.git
+  repo: git@github.com:dingweiqings/dingweiqings.github.io
   branch: [pages]
   message: "doc"
