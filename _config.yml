@@ -11,28 +11,9 @@ author: KurtDing
 language: en
 timezone: 'Asia/Shanghai'
 
-# SubNav
-subnav:
-  github: "https://github.com/dingweiqings"
-  weibo: "#"
-  rss: "#"
-  zhihu: "#"
-  #qq: "#"
-  #weixin: "#"
-  #jianshu: "#"
-  #douban: "#"
-  #segmentfault: "#"
-  #bilibili: "#"
-  #acfun: "#"
-  #mail: "mailto:litten225@qq.com"
-  #facebook: "#"
-  #google: "#"
-  #twitter: "#"
-  #linkedin: "#"
-
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://dingweiqings.github.io/dingweiqings.github.io
+url: https://dingweiqings.github.io
 permalink: "/:year/:month/:day/:title/"
 permalink_defaults:
 pretty_urls:
