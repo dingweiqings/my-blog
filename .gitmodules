@@ -1,10 +1,10 @@
-[submodule "themes/next"]
-	path = themes/next
-	url = git@github.com:theme-next/hexo-theme-next.git
-	branch = master
-	update = rebase
-[submodule "themes/yilia"]
-	path = themes/yilia
-	url = git@github.com:litten/hexo-theme-yilia.git
-	branch = master
-	update = rebase
+; [submodule "themes/next"]
+; 	path = themes/next
+; 	url = git@github.com:theme-next/hexo-theme-next.git
+; 	branch = master
+; 	update = rebase
+; [submodule "themes/yilia"]
+; 	path = themes/yilia
+; 	url = git@github.com:litten/hexo-theme-yilia.git
+; 	branch = master
+; 	update = rebase
