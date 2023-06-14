@@ -103,5 +103,5 @@ theme: yilia
 deploy:
   type: git
   repo: git@github.com:dingweiqings/dingweiqings.github.io
-  branch: [pages]
+  branch: [master]
   message: "doc"
