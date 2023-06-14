@@ -105,3 +105,21 @@ deploy:
   repo: git@github.com:dingweiqings/dingweiqings.github.io
   branch: [pages]
   message: "doc"
+jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: false
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
