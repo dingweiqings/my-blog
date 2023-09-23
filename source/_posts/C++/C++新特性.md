@@ -4,6 +4,19 @@ date: 2023-01-17 19:40:56
 tags: C++
 categories: C++
 ---
+# lambda函数
+  利用lambda表达式可以编写内嵌的匿名函数，用以替换独立函数或者函数对象，并且使代码更可读。
+```
+[]：默认不捕获任何变量；
+[=]：默认以值捕获所有变量；
+[&]：默认以引用捕获所有变量；
+[x]：仅以值捕获x，其它变量不捕获；
+[&x]：仅以引用捕获x，其它变量不捕获；
+[=, &x]：默认以值捕获所有变量，但是x是例外，通过引用捕获；
+[&, x]：默认以引用捕获所有变量，但是x是例外，通过值捕获；
+[this]：通过引用捕获当前对象（其实是复制指针）；
+[*this]：通过传值方式捕获当前对象；
+```
 # 智能指针
 C++11 新标准在废弃 auto_ptr 的同时，增添了 unique_ptr、shared_ptr 以及 weak_ptr 这 3 个智能指针来实现堆内存的自动回收。实现原理是通过类达到作用域后的构造和析构来实现的
 ## 独占指针
@@ -38,3 +51,5 @@ https://github.com/dingweiqings/study/tree/master/cpp_study/src/thread
  https://immortalqx.github.io/2021/12/04/cpp-notes-3/
  3. C++智能指针
  https://www.cnblogs.com/tenosdoit/p/3456704.html
+ 4. lambda函数
+ https://www.jianshu.com/p/d686ad9de817
