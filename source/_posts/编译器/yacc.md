@@ -290,6 +290,11 @@ bison -t -v -d heat-grammer.y -b y
 [mysql yacc](https://github.com/mysql/mysql-server/blob/8.0/sql/sql_yacc.yy)
 [Postgres yacc](https://github.com/postgres/postgres/blob/master/src/backend/parser/gram.y)
 
+# 更深入的学习
+[北大编译实践](https://pku-minic.github.io/online-doc/#/lv9p-reincarnation/ssa-form)
+[lex和yacc内核](https://blog.ginshio.org/2022/flex_and_bison/#gnu-bison)
+
 # 引用
 1. [flex和bison](https://cnblogs.com/itech/archive/2012/03/04/2375746.html)
 2. [flex和bison实现计算器](https://blog.csdn.net/u014015972/article/details/51480680)
+3. [flex和bison中文版电子书](http://home.ustc.edu.cn/~guoxing/ebooks/flex%E4%B8%8Ebison%E4%B8%AD%E6%96%87%E7%89%88.pdf)
