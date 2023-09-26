@@ -1,7 +1,7 @@
 ---
 title: yacc使用
 date: 2023-09-25 11:10:26
-tags: 词法分析 
+tags: yacc
 categories: 编译器
 ---
 # 简单介绍下编译原理
@@ -11,7 +11,7 @@ AST啥的也理解不透彻.
 # 词法分析和语法分析框架
 lex和yacc是unix下的词法/语法分析框架,
 flex/bison是词法/语法分析框架
-bison和yacc实际上用途是同一种，不过在不同平台下.yacc已经成为语法分析框架的代名词。下文统一使用lex/yacc
+bison和yacc实际上用途是同一种，不过在不同平台下,yacc已经成为语法分析框架的代名词。下文统一使用lex/yacc
 
 # Lex和YACC内部是如何工作的？
 main ->yyparse() -> yylex()
@@ -148,6 +148,7 @@ target_set:
 ```
 
 ## 输出
+对于设定的温度,我为了展示有运算逻辑而不是直接拷贝字符串,我特意对参数做了一个加5的逻辑
 执行下列命令
 ```
 flex heat.lex
@@ -158,6 +159,120 @@ gcc y.tab.c lex.yy.c
 
 ## yacc中的union类型(这种是实际工程中才使用的)
 
+### 温度控制器的新语法
+用下面方式控制，先选择heater，再设置温度
+heater mainbuilding
+
+    Selected ‘mainbuilding’ heater
+
+Target temperature 23
+
+    ‘mainbuilding’ heater target temperature now 23
+
+### yacc中的变量
+```
+%{
+#include <stdio.h>
+#include <string.h>
+extern int yydebug = 1;
+char * heater=NULL;
+void yywrap()
+{
+    return  1;
+}
+void yyerror(char * errmsg){
+    printf("%s\n",errmsg);
+}
+
+int main()
+{
+    yyparse();
+}
+%}
+
+%token  TOKHEAT TOKTARGET TOKTEMPERATURE  TOKHEATER 
+%union
+{
+
+    int number;
+
+    char *string;
+}
+
+%token <number> STATE
+
+%token <number> NUMBER
+
+%token <string> WORD
+
+%%
+commands: /* empty */
+    | commands command
+;
+
+command: heat_switch
+    | target_set | heater_select
+;
+
+heat_switch:
+    TOKHEAT STATE
+    {
+         if ($2)
+            printf("\tHeat turned on\n");
+         else
+            printf("\tHeat turned off\n");
+    }
+;
+
+target_set:
+    TOKTARGET TOKTEMPERATURE NUMBER
+    {
+        //展示区别,这里给输入参数+5
+        printf("\tHeater '%s' temperature set to %d\n", heater, $3+5);
+    }
+;
+heater_select :
+
+    TOKHEATER WORD
+
+    {
+
+       printf("\tSelected heater ‘%s’\n", $2);
+
+       heater = $2;
+
+}
+
+    ;
+%%
+```
+这次我们在command产生式增加了heater_select,并且定义了一个全局变量来接收选择的温度控制器.token处，我们定义了一个union变量,用于处理输入中不同的数据类型.此处表示yylval是一个union类型,可用来处理不同的数据类型
+
+
+### 语法
+```
+%{
+#include <stdio.h>
+#include "y.tab.h"
+%}
+%%
+[0-9]+         { yylval.number = atoi(yytext); return NUMBER;}
+heater         return TOKHEATER;
+heat           return TOKHEAT;
+on|off         { yylval.number = !strcmp(yytext,  "on"); return STATE; }
+target         return TOKTARGET;
+temperature    return TOKTEMPERATURE;
+[a-z0-9]+     yylval.string = strdup(yytext); return WORD;
+\n             /* ignore end of line */;
+[ \t]+         /* ignore whitespace */
+%%
+```
+细心的同学可能已经发现了,这次对于yylval的赋值已经是具体到成员了
+
+### 输出
+对于设定的温度,我为了展示有运算逻辑而不是直接拷贝字符串,我特意对参数做了一个加5的逻辑
+![输出](/img/yacc-with-union.png)
+
 
 # yacc debug
 当调试你的语法时，在YACC命令行中添加—debug和—verbose选项，在你的C文件头中添加以下语句：
@@ -167,6 +282,8 @@ int yydebug = 1;这将生成一个y.output文件，其中说明了所创建的�
 -t(--debug) -v
 bison -t -v -d heat-grammer.y -b y 
 ```
+# 测试代码见
+[我的github代码](https://github.com/dingweiqings/study/tree/master/compiler_study/src/yacc)
 
 # 推广
 我们发现lex和yacc可以用来处理有固定语法的字符串,那么我们可以用其来解析配置文件,解析sql,解析json等等.好啦,现在你可以去看mysql和pg的sql解析啦,为学到新知识开心.
@@ -174,5 +291,5 @@ bison -t -v -d heat-grammer.y -b y
 [Postgres yacc](https://github.com/postgres/postgres/blob/master/src/backend/parser/gram.y)
 
 # 引用
-1. [flex和bison](cnblogs.com/itech/archive/2012/03/04/2375746.html)
+1. [flex和bison](https://cnblogs.com/itech/archive/2012/03/04/2375746.html)
 2. [flex和bison实现计算器](https://blog.csdn.net/u014015972/article/details/51480680)

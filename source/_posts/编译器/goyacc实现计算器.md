@@ -1,7 +1,7 @@
 ---
-title: 词法分析和语法分析
+title: goyacc
 date: 2023-09-19 16:45:46
-tags: 词法分析 语法分析
+tags: yacc
 categories: 编译器
 ---
 # 简单介绍下编译原理
@@ -15,8 +15,7 @@ AST啥的也理解不透彻.
 ## 词法框架
 根据正则表达式来定义某种特定token的规则,在解析字符串流的时候，根据正则来判断属于哪种token
 ## 常见的词法框架/工具
-lex和flex,lex是通过正则表达式和自定义解析字符串综合工作的
-
+lex/flex,是通过正则表达式和自定义解析字符串综合工作的
 
 # 语法分析
 主要在于如何表达语法规则和检验语法规则.
@@ -360,4 +359,4 @@ https://github.com/dingweiqings/study/tree/master/goyacc-study
 
 # 引用
 1. 龙书 编译原理
-2. yacc使用
+2. [yacc使用](/2023/09/25/编译器/yacc/)
