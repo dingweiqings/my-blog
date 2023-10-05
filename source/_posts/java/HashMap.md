@@ -91,7 +91,7 @@ category: java
 ```
 # get
 主要流程是
-1. 
+1. 先用哈希函数找到对应的桶，如果已经存在，再遍历链表或者树
 下面结合代码来解释：
 ```java
   public V get(Object key) {
@@ -122,10 +122,24 @@ category: java
 
 # 扩容
 主要流程
-1.
+1. 扩容大小为原来2倍，更新阈值为容量*loadFactor
+2. 找到在新数组中的位置,这个有个简单的数学原理
+由于扩容是总是扩容2倍，一开始大小也是2的幂次，故大小总是为2的幂次
+设当前大小为newsize，则
+`hash % newsize = hash & (newsize-1)`; 因为比newsize低的位都会是余数的位。
+更进一步,设某个桶在原数组中下标为x，在新数组中下标为y，原数组大小为oldsize,则x,y满足
+```java 
+hash % oldsize=x
+if (hash & oldsize ==1 ){
+    y = x + oldsize//分支1
+}else{
+    y = x//分支2
+}
+```
+原因还是因为比数组大小低的位哪些会对余数产生贡献。
+
+根据上面原理，在拷贝原数组的元素时，只需要将桶后面的链表拆分成2部分，一部分属于分支1，一部分属于分支2，放入对应的桶中即可
 下面结合代码来解释
-
-
 ```java
  final Node<K,V>[] resize() {
         Node<K,V>[] oldTab = table;
@@ -166,11 +180,14 @@ category: java
                     else if (e instanceof TreeNode)
                         ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
                     else { // preserve order
+                    //将原来的链表拆分成2部分,先叫做low和high吧
                         Node<K,V> loHead = null, loTail = null;
                         Node<K,V> hiHead = null, hiTail = null;
                         Node<K,V> next;
+
                         do {
                             next = e.next;
+                            //根据最后一位来判断是要放入low部分还high部分
                             if ((e.hash & oldCap) == 0) {
                                 if (loTail == null)
                                     loHead = e;
@@ -186,10 +203,12 @@ category: java
                                 hiTail = e;
                             }
                         } while ((e = next) != null);
+                        // //把low部分的链表头部放入 newTab[j]位置
                         if (loTail != null) {
                             loTail.next = null;
                             newTab[j] = loHead;
                         }
+                        //把high部分的链表头部放入 newTab[j + oldCap]位置
                         if (hiTail != null) {
                             hiTail.next = null;
                             newTab[j + oldCap] = hiHead;
